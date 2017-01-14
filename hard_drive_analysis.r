@@ -7,9 +7,9 @@ library("matrixStats")
 
 #sink(file="hard_drive_output.txt")
 
-#select hard drives which have experienced a failure
 channel <- odbcConnect("SQL Server")
 
+#select hard drives which have experienced a failure
 hdd <- sqlQuery(channel, "SELECT model, smart_9_raw FROM HardDisk.dbo.HardDriveTable WHERE (failure = 1 AND smart_9_raw < 24*10*365)")
 levels_model <- levels(factor(hdd$model))
 num <- length(levels_model)
@@ -238,7 +238,7 @@ for (k in seq(1,num)){
       corrplot(co, method="circle", type="upper", order="AOE")
       readline()
       #if (levels_model[k] == "ST4000DM000") dev.off()
-	}
+    }
   }
 }
 
@@ -258,32 +258,32 @@ fit <- function(day, x, y, mod){
   switch(mod,
     lm(day ~ x),
     lm(day ~ y),
-	lm(day ~ x + y),
-	lm(day ~ I(x^2)),
-	lm(day ~ I(y^2)),
-	lm(day ~ y + I(x^2)),
-	lm(day ~ x + I(y^2)),
-	lm(day ~ I(x^2) + I(y^2)),
-	lm(day ~ I(x^2) + I(x*y) + I(y^2)),
+    lm(day ~ x + y),
+    lm(day ~ I(x^2)),
+    lm(day ~ I(y^2)),
+    lm(day ~ y + I(x^2)),
+    lm(day ~ x + I(y^2)),
+    lm(day ~ I(x^2) + I(y^2)),
+    lm(day ~ I(x^2) + I(x*y) + I(y^2)),
     lm(day ~ x + y + I(x^2) + I(x*y) + I(y^2)),
-	lm(day ~ x + y + I(x^2) + I(x*y) + I(y^2) + I(x^3) + I(x^2*y) + I(x*y^2) + I(y^3)),
-	lm(day ~ 0 + y + I(x*y) + I(y^2) + I(x^2*y) + I(x*y^2) + I(y^3)))
+    lm(day ~ x + y + I(x^2) + I(x*y) + I(y^2) + I(x^3) + I(x^2*y) + I(x*y^2) + I(y^3)),
+    lm(day ~ 0 + y + I(x*y) + I(y^2) + I(x^2*y) + I(x*y^2) + I(y^3)))
 }
 
 evaluate <- function(x, y, co, mod){
   switch(mod,
     d <- co[1] + co[2]*x,
-	d <- co[1] + co[2]*y,
-	d <- co[1] + co[2]*x + co[3]*y,
-	d <- co[1] + co[2]*x^2,
-	d <- co[1] + co[2]*y^2,
-	d <- co[1] + co[2]*y + co[3]*x^2,
-	d <- co[1] + co[2]*x + co[3]*y^2,
-	d <- co[1] + co[2]*x^2 + co[3]*y^2,
-	d <- co[1] + co[2]*x^2 + co[3]*x*y + co[4]*y^2,
-	d <- co[1] + co[2]*x + co[3]*y + co[4]*x^2 + co[5]*x*y + co[6]*y^2,
-	d <- co[1] + co[2]*x + co[3]*y + co[4]*x^2 + co[5]*x*y + co[6]*y^2 + co[7]*x^3 + co[8]*x^2*y + co[9]*x*y^2 + co[10]*y^3,
-	d <- co[1]*y + co[2]*x*y + co[3]*y^2 + co[4]*x^2*y + co[5]*x*y^2 + co[6]*y^3)
+    d <- co[1] + co[2]*y,
+    d <- co[1] + co[2]*x + co[3]*y,
+    d <- co[1] + co[2]*x^2,
+    d <- co[1] + co[2]*y^2,
+    d <- co[1] + co[2]*y + co[3]*x^2,
+    d <- co[1] + co[2]*x + co[3]*y^2,
+    d <- co[1] + co[2]*x^2 + co[3]*y^2,
+    d <- co[1] + co[2]*x^2 + co[3]*x*y + co[4]*y^2,
+    d <- co[1] + co[2]*x + co[3]*y + co[4]*x^2 + co[5]*x*y + co[6]*y^2,
+    d <- co[1] + co[2]*x + co[3]*y + co[4]*x^2 + co[5]*x*y + co[6]*y^2 + co[7]*x^3 + co[8]*x^2*y + co[9]*x*y^2 + co[10]*y^3,
+    d <- co[1]*y + co[2]*x*y + co[3]*y^2 + co[4]*x^2*y + co[5]*x*y^2 + co[6]*y^3)
   return(d)  
 }
 
