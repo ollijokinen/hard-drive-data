@@ -81,7 +81,7 @@ df_failure <- data.frame(serial_number = serial_number_day[ord[1:100]], model = 
 print(df_failure)
 
 #actual failures
-hdd_actual <- sqlQuery(channel, "SELECT serial_number, model FROM HardDisk.dbo.HardDriveTable WHERE (failure = 1 AND date > '2016-07-31' AND date <= '2016-08-31' AND smart_9_raw < 24*10*365)")
+hdd_actual <- sqlQuery(channel, "SELECT serial_number, model FROM HardDisk.dbo.HardDriveTable WHERE (failure = 1 AND date > '2016-07-31' AND date <= '2016-08-10' AND smart_9_raw < 24*10*365)")
 
 num_actual <- length(hdd_actual$serial_number)
 proba <- rep(0,num_actual)
