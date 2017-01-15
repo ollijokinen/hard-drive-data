@@ -1,4 +1,6 @@
--- allow advanced options to be changed
+--This program inserts multiple csv files into a database
+
+--allow advanced options to be changed
 EXEC sp_configure 'show advanced options', 1
 GO
 RECONFIGURE
